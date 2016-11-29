@@ -14,6 +14,16 @@ STOCKS = {
         'market_id': 25,
         'stock_id': 20569,
         'code': 'US2.AAPL'
+    },
+    ('NASDAQ', 'GOOG'): {
+        'market_id': 25,
+        'stock_id': 20590,
+        'code': 'US2.GOOG'
+    },
+    ('NASDAQ', 'MSFT'): {
+        'market_id': 25,
+        'stock_id': 19068,
+        'code': 'US1.MSFT'
     }
 }
 
@@ -43,7 +53,7 @@ def load_history(market, code, from_date, to_date):
         to_date=to_date.strftime('%d.%m.%Y'))
 
     with urllib.request.urlopen(url) as response:
-        data = io.StringIO(response.read().decode())
+        data = io.StringIO(response.read().decode(errors='ignore'))
 
     try:
         df = pd.read_csv(data, dtype={
@@ -52,7 +62,7 @@ def load_history(market, code, from_date, to_date):
             '<LAST>': np.float64,
             '<VOL>': np.int64
         })
-    except Exception as e:
+    except Exception:
         text = data.getvalue()
         if text == '':
             return []

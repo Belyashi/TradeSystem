@@ -114,8 +114,16 @@ def main():
         market='NASDAQ',
         code='AAPL',
         name='USD - Apple Inc')
+    create_or_get_stock(
+        market='NASDAQ',
+        code='GOOG',
+        name='USD - Alphabet Inc')
+    create_or_get_stock(
+        market='NASDAQ',
+        code='MSFT',
+        name='USD - Microsoft Corporation')
 
-    update_stocks_history(days_before=10, max_batch=5)
+    update_stocks_history(days_before=20, max_batch=5)
 
 if __name__ == '__main__':
     main()
