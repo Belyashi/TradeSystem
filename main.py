@@ -1,11 +1,16 @@
-from sqlalchemy import create_engine
-
+from db import engine, session
 from models import Base
+import users
 
 
 def main():
-    engine = create_engine('sqlite:///:memory:', echo=True)
     Base.metadata.create_all(engine)
+
+    token = users.register()
+    session.commit()
+
+    user = users.get_by_token(token)
+    print(user)
 
 
 if __name__ == '__main__':

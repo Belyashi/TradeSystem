@@ -8,7 +8,7 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
-    token = Column(String)
+    token = Column(String(50), unique=True)
 
 
 class Balance(Base):
@@ -22,9 +22,9 @@ class Stock(Base):
     __tablename__ = 'stocks'
 
     id = Column(Integer, primary_key=True)
-    market = Column(String)
-    code = Column(String)
-    name = Column(String)
+    market = Column(String(50))
+    code = Column(String(50))
+    name = Column(String(50))
 
 
 class StockHistory(Base):
@@ -32,9 +32,9 @@ class StockHistory(Base):
 
     id = Column(Integer, primary_key=True)
     stock_id = Column(Integer, ForeignKey(Stock.id))
-    time = Column(DateTime)
+    time = Column(DateTime(timezone=True))
     volume = Column(Integer)
-    price = Column(Integer)
+    price = Column(Float)
 
 
 class StockBalance(Base):
