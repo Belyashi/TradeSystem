@@ -29,6 +29,8 @@ def main():
 
     server.app.run(host=SERVER_HOST, port=SERVER_PORT)
 
+    updater.stop()
+
 
 if __name__ == '__main__':
     main()
