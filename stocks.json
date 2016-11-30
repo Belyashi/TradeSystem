@@ -1,0 +1,17 @@
+[
+  {
+    "market": "NASDAQ",
+    "code": "AAPL",
+    "name": "USD - Apple Inc"
+  },
+  {
+    "market": "NASDAQ",
+    "code": "GOOG",
+    "name": "USD - Alphabet Inc"
+  },
+  {
+    "market": "NASDAQ",
+    "code": "MSFT",
+    "name": "USD - Microsoft Corporation"
+  }
+]

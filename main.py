@@ -1,22 +1,19 @@
 import logging
+import json
 
-from sqlalchemy.orm.exc import NoResultFound
+import server
+from db import engine
+from models import Base
+from settings import SERVER_HOST, SERVER_PORT, STOCKS
+from trade.history import HistoryUpdater
+from trade.stocks import create_or_get_stock
 
-from db import engine, session
-from models import Base, Stock
-from history import update_stocks_history
 
-
-def create_or_get_stock(market, code, name=None):
-    try:
-        stock = session.query(Stock).filter_by(market=market, code=code).one()
-    except NoResultFound:
-        stock = Stock(market=market,
-                      code=code,
-                      name=name)
-        session.add(stock)
-        session.flush()
-    return stock
+def load_stocks():
+    with open(STOCKS) as f:
+        data = json.loads(f.read())
+    for item in data:
+        create_or_get_stock(**item)
 
 
 def main():
@@ -25,20 +22,12 @@ def main():
 
     Base.metadata.create_all(engine)
 
-    create_or_get_stock(
-        market='NASDAQ',
-        code='AAPL',
-        name='USD - Apple Inc')
-    create_or_get_stock(
-        market='NASDAQ',
-        code='GOOG',
-        name='USD - Alphabet Inc')
-    create_or_get_stock(
-        market='NASDAQ',
-        code='MSFT',
-        name='USD - Microsoft Corporation')
+    load_stocks()
 
-    update_stocks_history()
+    updater = HistoryUpdater()
+    updater.run()
+
+    server.app.run(host=SERVER_HOST, port=SERVER_PORT)
 
 
 if __name__ == '__main__':

@@ -5,10 +5,12 @@ import time
 import pytz
 
 from db import session
-from history import finamru_api
 from models import Stock
 from settings import HISTORY_DAYS_BEFORE, HISTORY_LOAD_BATCH
+from trade.history import finamru_api
 from .history import get_history_range, save_history
+
+logger = logging.getLogger(__name__)
 
 
 def _get_update_date_range(stock_id, first_date, last_date):
@@ -54,10 +56,10 @@ def _update_stock_history(market, code):
                 from_date=from_date,
                 to_date=to_date)
         except finamru_api.FinamRuException as e:
-            logging.error('{}.{} not updated: {}'.format(market, code, str(e)))
+            logger.error('{}.{} not updated: {}'.format(market, code, str(e)))
             return
         except Exception as e:
-            logging.exception(e)
+            logger.exception(e)
             return
 
         save_history(stock.id, history)
@@ -65,14 +67,14 @@ def _update_stock_history(market, code):
 
         t1 = time.time()
 
-        logging.info('{}.{} updated from {} to {} ({:2f} seconds)'
+        logger.info('{}.{} updated from {} to {} ({:2f} seconds)'
                      .format(market, code, from_date, to_date, t1 - t0))
 
         last_date = from_date - datetime.timedelta(days=1)
 
 
 def update_stocks_history():
-    logging.info('updating stocks...')
+    logger.info('updating stocks...')
     for stock in session.query(Stock):
         _update_stock_history(stock.market, stock.code)
-    logging.info('updating stocks finished')
+    logger.info('updating stocks finished')
