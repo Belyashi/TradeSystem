@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 
 from db import session
 from models import Stock, StockHistory
-from trade import stocks
+import trade
 from utils import str_to_date
 
 app = Flask(__name__)
@@ -12,6 +12,12 @@ app = Flask(__name__)
 
 def json_data(data):
     return jsonify({'data': data})
+
+
+@app.route('/users/register')
+def user_register():
+    token = trade.users.register()
+    return json_data({'token': token})
 
 
 @app.route('/stocks')
@@ -22,14 +28,14 @@ def stocks_list():
             'market': stock.market,
             'code': stock.code,
             'name': stock.name,
-            'tag': stocks.get_tag(stock),
+            'tag': trade.stocks.get_tag(stock),
         })
     return json_data(data)
 
 
 @app.route('/stocks/<tag>/history')
 def stock_history(tag):
-    stock = stocks.get_by_tag(tag)
+    stock = trade.stocks.get_by_tag(tag)
 
     from_date = str_to_date(request.args.get('from_date'))
     to_date = str_to_date(request.args.get('to_date'))
