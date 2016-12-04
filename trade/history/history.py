@@ -8,7 +8,7 @@ def get_history_range(stock_id):
     query = (session.query(
         func.min(StockHistory.time).label('min_time'),
         func.max(StockHistory.time).label('max_time'))
-             .filter(StockHistory.stock_id == stock_id)
+             .filter_by(stock_id=stock_id)
              .one())
     return query.min_time, query.max_time
 
