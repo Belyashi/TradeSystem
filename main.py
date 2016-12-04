@@ -2,18 +2,18 @@ import logging
 import json
 
 import server
-from db import engine
+from db import engine, session
 from models import Base
 from settings import SERVER_HOST, SERVER_PORT, STOCKS
-from trade.history import HistoryUpdater
-from trade.stocks import create_or_get_stock
+import trade
+from trade.stock_history.update import StockHistoryUpdater
 
 
 def load_stocks():
     with open(STOCKS) as f:
         data = json.loads(f.read())
-    for item in data:
-        create_or_get_stock(**item)
+
+    trade.stocks.create_stocks(session, data)
 
 
 def main():
@@ -24,7 +24,7 @@ def main():
 
     load_stocks()
 
-    updater = HistoryUpdater()
+    updater = StockHistoryUpdater(session)
     updater.run()
 
     server.app.run(host=SERVER_HOST, port=SERVER_PORT)

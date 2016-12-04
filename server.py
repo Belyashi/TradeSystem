@@ -2,9 +2,9 @@ import datetime
 
 from flask import Flask, request, jsonify
 
+import trade
 from db import session
 from models import Stock, StockHistory
-import trade
 from utils import str_to_date
 
 app = Flask(__name__)
@@ -16,7 +16,7 @@ def json_data(data):
 
 @app.route('/users/register')
 def user_register():
-    token = trade.users.register()
+    token = trade.users.register(session)
     return json_data({'token': token})
 
 
@@ -28,14 +28,14 @@ def stocks_list():
             'market': stock.market,
             'code': stock.code,
             'name': stock.name,
-            'tag': trade.stocks.get_tag(stock),
+            'tag': stock.tag,
         })
     return json_data(data)
 
 
 @app.route('/stocks/<tag>/history')
 def stock_history(tag):
-    stock = trade.stocks.get_by_tag(tag)
+    stock = trade.stocks.get_by_tag(session, tag)
 
     from_date = str_to_date(request.args.get('from_date'))
     to_date = str_to_date(request.args.get('to_date'))

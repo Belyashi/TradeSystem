@@ -26,6 +26,10 @@ class Stock(Base):
     code = Column(String(50))
     name = Column(String(50))
 
+    @property
+    def tag(self):
+        return '{}-{}'.format(self.market, self.code).lower()
+
 
 class StockHistory(Base):
     __tablename__ = 'stock_history'
@@ -57,6 +61,10 @@ class Ticket(Base):
     opened = Column(Boolean, default=True)
     open_time = Column(DateTime)
     duration = Column(Interval)
+
+    @property
+    def total_price(self):
+        return self.count * self.price
 
 
 class Transaction(Base):

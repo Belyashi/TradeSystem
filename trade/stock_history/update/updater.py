@@ -1,16 +1,22 @@
 from threading import Thread
 import time
+import logging
 
 from settings import HISTORY_UPDATE_TIMEDELTA
-from .update import update_stocks_history
+from trade.stock_history.update import update_histories
 
 UPDATE_TIMEDELTA_SECONDS = HISTORY_UPDATE_TIMEDELTA.total_seconds()
 
 SLEEP_PERIOD = 5.
 
 
-class HistoryUpdater(object):
-    def __init__(self):
+logger = logging.getLogger(__name__)
+
+
+class StockHistoryUpdater(object):
+    def __init__(self, session):
+        self._session = session
+
         self._thread = Thread(target=self._loop)
         self._active = False
 
@@ -25,7 +31,10 @@ class HistoryUpdater(object):
 
     def _loop(self):
         while self._active:
-            update_stocks_history()
+            try:
+                update_histories(self._session)
+            except Exception as e:
+                logger.exception(e)
 
             left_time = UPDATE_TIMEDELTA_SECONDS
             while self._active and left_time > 0:
