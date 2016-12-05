@@ -30,7 +30,7 @@ def create_ticket(session, user_id, count=None, price=None, buy=True, duration=N
     return ticket, stock.id
 
 
-class TestTradeBalance(BaseUserTestCase):
+class TestTradeTickets(BaseUserTestCase):
     @mock.patch('trade.tickets.balance.transfer_stocks')
     @mock.patch('trade.tickets.balance.transfer_money')
     def test_open_ticket_buy(self, transfer_money, transfer_stocks):

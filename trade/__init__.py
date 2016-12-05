@@ -3,3 +3,4 @@ from . import stocks
 from . import users
 from . import balance
 from . import tickets
+from . import ticker

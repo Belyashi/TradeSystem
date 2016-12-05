@@ -3,7 +3,7 @@ from models import User
 from .base import BaseTestCase
 
 
-class TestTradeUser(BaseTestCase):
+class TestTradeUsers(BaseTestCase):
     def test_register(self):
         token = trade.users.register(self.session)
         self.session.commit()
