@@ -6,6 +6,11 @@ from . import balance
 
 
 def open_ticket(session, user_id, stock_id, count, price, buy, duration):
+    if count <= 0:
+        raise ValueError('count value must be >0')
+    if price <= 0.:
+        raise ValueError('price value must be >0.')
+
     ticket = Ticket(user_id=user_id,
                     stock_id=stock_id,
                     count=count,
