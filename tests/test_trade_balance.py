@@ -2,17 +2,10 @@ from collections import defaultdict
 
 from models import Balance, StockBalance
 import trade
-from .base import BaseTestCase
+from .base import BaseUserTestCase
 
 
-class TestTradeBalance(BaseTestCase):
-    def setUp(self):
-        super(TestTradeBalance, self).setUp()
-
-        token = trade.users.register(self.session)
-        user = trade.users.get_by_token(self.session, token)
-        self.user_id = user.id
-
+class TestTradeBalance(BaseUserTestCase):
     def test_transfer_money(self):
         deltas = [100.23, -50.01, -90.67, 1010.]
         expected_value = 0.
