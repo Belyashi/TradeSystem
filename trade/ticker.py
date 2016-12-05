@@ -19,3 +19,4 @@ def get_trade_moment(session, ticket, from_time=None):
              .first())
 
     return trade.time if trade else None
+

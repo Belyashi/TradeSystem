@@ -31,6 +31,8 @@ def open_ticket(session, user_id, stock_id, count, price, buy, duration):
 
 def close_ticket(session, ticket_id, success):
     ticket = session.query(Ticket).filter_by(id=ticket_id).one()
+    if not ticket.opened:
+        raise ValueError('ticket with ticket_id={} is already closed'.format(ticket_id))
     ticket.opened = False
 
     if success == ticket.buy:

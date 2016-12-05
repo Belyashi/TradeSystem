@@ -178,3 +178,14 @@ class TestTradeTickets(BaseUserTestCase):
             ticket.stock_id,
             ticket.count
         )
+
+    def test_close_not_opened_ticket(self):
+        ticket, _ = create_ticket(
+            self.session,
+            self.user_id,
+            buy=False
+        )
+        ticket.opened = False
+
+        with self.assertRaises(ValueError):
+            trade.tickets.close_ticket(self.session, ticket.id, success=False)
