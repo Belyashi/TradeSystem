@@ -31,8 +31,8 @@ def create_ticket(session, user_id, count=None, price=None, buy=True, duration=N
 
 
 class TestTradeTickets(BaseUserTestCase):
-    @mock.patch('trade.tickets.balance.transfer_stocks')
-    @mock.patch('trade.tickets.balance.transfer_money')
+    @mock.patch('trade.balance.transfer_stocks')
+    @mock.patch('trade.balance.transfer_money')
     def test_open_ticket_buy(self, transfer_money, transfer_stocks):
         ticket_count = 10
         ticket_price = 100.15
@@ -66,8 +66,8 @@ class TestTradeTickets(BaseUserTestCase):
 
         transfer_stocks.assert_not_called()
 
-    @mock.patch('trade.tickets.balance.transfer_stocks')
-    @mock.patch('trade.tickets.balance.transfer_money')
+    @mock.patch('trade.balance.transfer_stocks')
+    @mock.patch('trade.balance.transfer_money')
     def test_open_ticket_sell(self, transfer_money, transfer_stocks):
         ticket, stock_id = create_ticket(
             self.session,
@@ -96,8 +96,8 @@ class TestTradeTickets(BaseUserTestCase):
         with self.assertRaises(ValueError):
             create_ticket(self.session, self.user_id, price=-100.55)
 
-    @mock.patch('trade.tickets.balance.transfer_stocks')
-    @mock.patch('trade.tickets.balance.transfer_money')
+    @mock.patch('trade.balance.transfer_stocks')
+    @mock.patch('trade.balance.transfer_money')
     def test_close_ticket_buy_success(self, transfer_money, transfer_stocks):
         ticket, _ = create_ticket(
             self.session,
@@ -118,8 +118,8 @@ class TestTradeTickets(BaseUserTestCase):
             ticket.count
         )
 
-    @mock.patch('trade.tickets.balance.transfer_stocks')
-    @mock.patch('trade.tickets.balance.transfer_money')
+    @mock.patch('trade.balance.transfer_stocks')
+    @mock.patch('trade.balance.transfer_money')
     def test_close_ticket_sell_success(self, transfer_money, transfer_stocks):
         ticket, _ = create_ticket(
             self.session,
@@ -138,8 +138,8 @@ class TestTradeTickets(BaseUserTestCase):
         )
         transfer_stocks.assert_not_called()
 
-    @mock.patch('trade.tickets.balance.transfer_stocks')
-    @mock.patch('trade.tickets.balance.transfer_money')
+    @mock.patch('trade.balance.transfer_stocks')
+    @mock.patch('trade.balance.transfer_money')
     def test_close_ticket_buy_not_success(self, transfer_money, transfer_stocks):
         ticket, _ = create_ticket(
             self.session,
@@ -158,8 +158,8 @@ class TestTradeTickets(BaseUserTestCase):
         )
         transfer_stocks.assert_not_called()
 
-    @mock.patch('trade.tickets.balance.transfer_stocks')
-    @mock.patch('trade.tickets.balance.transfer_money')
+    @mock.patch('trade.balance.transfer_stocks')
+    @mock.patch('trade.balance.transfer_money')
     def test_close_ticket_sell_not_success(self, transfer_money, transfer_stocks):
         ticket, _ = create_ticket(
             self.session,

@@ -138,3 +138,38 @@ class TestTradeTicker(BaseUserTestCase):
         )
 
         return history, trade_time
+
+    def test_process_ticket_close_expired(self):
+        stock = trade.stocks.create_or_get_stock(
+            self.session,
+            market='MARKET',
+            code='CODE'
+        )
+
+        ticket = trade.tickets.open_ticket(
+            self.session,
+            self.user_id,
+            stock.id,
+            100, 55.5, True,
+            datetime.timedelta(minutes=5)
+        )
+        ticket.open_time = date_from_str('2016-12-05 00:00:00')
+
+        trade.ticker.process_tickets(
+            self.session,
+            None,
+            date_from_str('2016-12-05 00:04:55')
+        )
+
+        self.assertTrue(ticket.opened)
+
+        trade.ticker.process_tickets(
+            self.session,
+            None,
+            date_from_str('2016-12-05 00:05:10')
+        )
+
+        self.assertFalse(ticket.opened)
+
+    def test_process_ticket_close_succeed(self):
+        pass

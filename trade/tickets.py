@@ -16,7 +16,7 @@ def open_ticket(session, user_id, stock_id, count, price, buy, duration):
                     count=count,
                     price=price,
                     buy=buy,
-                    open_time=datetime.datetime.now(),
+                    open_time=datetime.datetime.utcnow(),
                     duration=duration)
     session.add(ticket)
     session.flush()
