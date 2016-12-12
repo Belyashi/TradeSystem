@@ -1,11 +1,11 @@
 import datetime
+import logging
 import time
 from threading import Thread
-import logging
 
 from sqlalchemy import and_
 
-from models import Ticket, StockHistory
+from trading_system.models import Ticket, StockHistory
 from . import tickets
 
 logger = logging.getLogger(__name__)

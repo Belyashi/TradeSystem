@@ -1,14 +1,14 @@
 import datetime
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
-import trade
 from .base import BaseUserTestCase
+import trading_system
 
 
 def _create_history(session, prices, start_time=None, stock_code=None):
-    stock = trade.stocks.create_or_get_stock(
+    stock = trading_system.trade.stocks.create_or_get_stock(
         session,
         market='MARKET',
         code=stock_code or 'CODE'
@@ -22,7 +22,7 @@ def _create_history(session, prices, start_time=None, stock_code=None):
         'volume': 100,
         'price': prices
     })
-    trade.stock_history.save_history(
+    trading_system.trade.stock_history.save_history(
         session,
         stock.id,
         history
@@ -31,7 +31,7 @@ def _create_history(session, prices, start_time=None, stock_code=None):
 
 
 def _get_trade_moment(session, user_id, stock_id, price, buy, from_time=None):
-    ticket = trade.tickets.open_ticket(
+    ticket = trading_system.trade.tickets.open_ticket(
         session,
         user_id,
         stock_id,
@@ -41,7 +41,7 @@ def _get_trade_moment(session, user_id, stock_id, price, buy, from_time=None):
         datetime.timedelta(days=10)
     )
 
-    trade_time = trade.ticker.get_trade_moment(
+    trade_time = trading_system.trade.ticker.get_trade_moment(
         session,
         ticket,
         from_time
@@ -140,13 +140,13 @@ class TestTradeTicker(BaseUserTestCase):
         return history, trade_time
 
     def test_process_ticket_close_expired(self):
-        stock = trade.stocks.create_or_get_stock(
+        stock = trading_system.trade.stocks.create_or_get_stock(
             self.session,
             market='MARKET',
             code='CODE'
         )
 
-        ticket = trade.tickets.open_ticket(
+        ticket = trading_system.trade.tickets.open_ticket(
             self.session,
             self.user_id,
             stock.id,
@@ -155,7 +155,7 @@ class TestTradeTicker(BaseUserTestCase):
         )
         ticket.open_time = date_from_str('2016-12-05 00:00:00')
 
-        trade.ticker.process_tickets(
+        trading_system.trade.ticker.process_tickets(
             self.session,
             None,
             date_from_str('2016-12-05 00:04:55')
@@ -163,7 +163,7 @@ class TestTradeTicker(BaseUserTestCase):
 
         self.assertTrue(ticket.opened)
 
-        trade.ticker.process_tickets(
+        trading_system.trade.ticker.process_tickets(
             self.session,
             None,
             date_from_str('2016-12-05 00:05:10')

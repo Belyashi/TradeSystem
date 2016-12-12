@@ -1,9 +1,9 @@
-from threading import Thread
-import time
 import logging
+import time
+from threading import Thread
 
-from settings import HISTORY_UPDATE_TIMEDELTA
-from trade.stock_history.update import update_histories
+from trading_system.settings import HISTORY_UPDATE_TIMEDELTA
+from trading_system.trade.stock_history.update import update_histories
 
 UPDATE_TIMEDELTA_SECONDS = HISTORY_UPDATE_TIMEDELTA.total_seconds()
 

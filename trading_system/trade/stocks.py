@@ -1,6 +1,6 @@
 from sqlalchemy.orm.exc import NoResultFound
 
-from models import Stock
+from trading_system.models import Stock
 
 
 def get_by_tag(session, tag):

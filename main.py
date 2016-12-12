@@ -1,19 +1,20 @@
-import logging
 import json
+import logging
 
-import server
-from db import engine, session
-from models import Base
-from settings import SERVER_HOST, SERVER_PORT, STOCKS
-import trade
-from trade.stock_history.update import StockHistoryUpdater
+from trading_system.models import Base
+
+from trading_system.api import server
+from trading_system.db import engine, session
+from trading_system.settings import SERVER_HOST, SERVER_PORT, STOCKS
+from trading_system.trade.stock_history.update import StockHistoryUpdater
+import trading_system
 
 
 def load_stocks():
     with open(STOCKS) as f:
         data = json.loads(f.read())
 
-    trade.stocks.create_stocks(session, data)
+    trading_system.trade.stocks.create_stocks(session, data)
 
 
 def main():

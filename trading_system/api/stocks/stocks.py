@@ -1,26 +1,17 @@
 import datetime
 
-from flask import Flask, request, jsonify
+from flask import request
+from flask.blueprints import Blueprint
+from trading_system.models import Stock, StockHistory
 
-import trade
-from db import session
-from models import Stock, StockHistory
-from utils import str_to_date
+from trading_system.api.utils import str_to_date, json_data
+from trading_system.db import session
+import trading_system
 
-app = Flask(__name__)
-
-
-def json_data(data):
-    return jsonify({'data': data})
+stocks = Blueprint('stocks', __name__)
 
 
-@app.route('/users/register')
-def user_register():
-    token = trade.users.register(session)
-    return json_data({'token': token})
-
-
-@app.route('/stocks')
+@stocks.route('/stocks')
 def stocks_list():
     data = []
     for stock in session.query(Stock):
@@ -33,9 +24,9 @@ def stocks_list():
     return json_data(data)
 
 
-@app.route('/stocks/<tag>/history')
+@stocks.route('/stocks/<tag>/history')
 def stock_history(tag):
-    stock = trade.stocks.get_by_tag(session, tag)
+    stock = trading_system.trade.stocks.get_by_tag(session, tag)
 
     from_date = str_to_date(request.args.get('from_date'))
     to_date = str_to_date(request.args.get('to_date'))

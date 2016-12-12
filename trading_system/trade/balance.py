@@ -1,6 +1,6 @@
 from sqlalchemy.orm.exc import NoResultFound
 
-from models import Balance, StockBalance
+from trading_system.models import Balance, StockBalance
 
 
 def get_money(session, user_id):
