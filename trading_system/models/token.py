@@ -1,12 +1,11 @@
 import datetime
-import dateutil
 import sqlalchemy as sa
 from .base import Base
 from .user import User
 
 
 def get_expiration_date():
-    result = datetime.datetime.now() + dateutil.relativedelta(days=14)
+    result = datetime.datetime.now() + datetime.timedelta(days=14)
     return result
 
 

@@ -29,7 +29,7 @@ def generate_token(session, user):
     return token
 
 
-def register(session, username=None, password=None):
+def register(session, username, password):
     user = mx.User(
         username=username,
         password=encrypt_password(password),
@@ -61,13 +61,13 @@ def log_out(session, token):
 
 
 def get_by_token(session, token):
-    return (
+    result = (
         session.query(mx.User)
-        .select_from(mx.User)
         .join(mx.Token, mx.Token.user_id == mx.User.id)
         .filter(
             mx.Token.token == token,
-            mx.Token.expiration_date < datetime.datetime.now(),
         )
         .first()
     )
+
+    return result

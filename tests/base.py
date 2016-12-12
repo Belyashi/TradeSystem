@@ -21,6 +21,6 @@ class BaseUserTestCase(BaseTestCase):
     def setUp(self):
         super(BaseUserTestCase, self).setUp()
 
-        token = trading_system.trade.users.register(self.session)
+        token = trading_system.trade.users.register(self.session, 'user', 'password')
         user = trading_system.trade.users.get_by_token(self.session, token)
         self.user_id = user.id
