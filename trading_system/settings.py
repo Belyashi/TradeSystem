@@ -9,4 +9,4 @@ HISTORY_UPDATE_TIMEDELTA = datetime.timedelta(minutes=1)
 SERVER_HOST = '0.0.0.0'
 SERVER_PORT = 3000
 
-STOCKS = '../stocks.json'
+STOCKS = './stocks.json'
