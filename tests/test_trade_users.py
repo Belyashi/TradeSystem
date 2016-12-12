@@ -1,6 +1,8 @@
 from trading_system.models import User
 from .base import BaseTestCase
 
+import trading_system
+
 
 class TestTradeUsers(BaseTestCase):
     def test_register(self):

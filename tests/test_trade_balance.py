@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+import trading_system
 from trading_system.models import Balance, StockBalance
 from .base import BaseUserTestCase
 

@@ -1,12 +1,13 @@
 import json
 import logging
 
-from models import Base
+from trading_system.models import Base
 
 from trading_system.api import server
 from trading_system.db import engine, session
 from trading_system.settings import SERVER_HOST, SERVER_PORT, STOCKS
 from trading_system.trade.stock_history.update import StockHistoryUpdater
+import trading_system
 
 
 def load_stocks():

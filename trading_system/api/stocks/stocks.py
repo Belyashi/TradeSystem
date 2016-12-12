@@ -2,10 +2,11 @@ import datetime
 
 from flask import request
 from flask.blueprints import Blueprint
-from models import Stock, StockHistory
+from trading_system.models import Stock, StockHistory
 
 from trading_system.api.utils import str_to_date, json_data
 from trading_system.db import session
+import trading_system
 
 stocks = Blueprint('stocks', __name__)
 

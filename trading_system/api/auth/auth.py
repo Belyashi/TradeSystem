@@ -2,6 +2,7 @@ from flask.blueprints import Blueprint
 
 from trading_system.api.utils import json_data
 from trading_system.db import session
+import trading_system
 
 
 auth = Blueprint('auth', __name__, url_prefix='/auth')

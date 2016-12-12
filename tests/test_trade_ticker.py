@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 
 from .base import BaseUserTestCase
+import trading_system
 
 
 def _create_history(session, prices, start_time=None, stock_code=None):

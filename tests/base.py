@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from trading_system.models import Base
+import trading_system
 
 
 class BaseTestCase(unittest.TestCase):

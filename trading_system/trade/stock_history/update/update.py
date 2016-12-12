@@ -3,7 +3,7 @@ import logging
 import time
 
 import pytz
-from trade.stock_history.stock_history import get_history_range, save_history
+from trading_system.trade.stock_history.stock_history import get_history_range, save_history
 
 from trading_system.models import Stock
 from trading_system.settings import HISTORY_DAYS_BEFORE, HISTORY_LOAD_BATCH
