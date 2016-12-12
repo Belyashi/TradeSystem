@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from models import User
+from trading_system.models import User
 
 
 def register(session):

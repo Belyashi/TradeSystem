@@ -1,5 +1,5 @@
 from flask import Flask
-from api import auth, stocks
+from . import auth, stocks
 
 
 app = Flask(__name__)

@@ -1,6 +1,6 @@
 from sqlalchemy import func
 
-from models import StockHistory
+from trading_system.models import StockHistory
 
 
 def get_history_range(session, stock_id):

@@ -1,12 +1,11 @@
 import datetime
+
 from flask import request
 from flask.blueprints import Blueprint
-
-import trade
-from db import session
 from models import Stock, StockHistory
-from utils import str_to_date, json_data
 
+from trading_system.api.utils import str_to_date, json_data
+from trading_system.db import session
 
 stocks = Blueprint('stocks', __name__)
 
@@ -26,7 +25,7 @@ def stocks_list():
 
 @stocks.route('/stocks/<tag>/history')
 def stock_history(tag):
-    stock = trade.stocks.get_by_tag(session, tag)
+    stock = trading_system.trade.stocks.get_by_tag(session, tag)
 
     from_date = str_to_date(request.args.get('from_date'))
     to_date = str_to_date(request.args.get('to_date'))

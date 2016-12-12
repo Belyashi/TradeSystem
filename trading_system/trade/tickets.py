@@ -1,7 +1,6 @@
 import datetime
 
-from models import Ticket
-
+from trading_system.models import Ticket
 from . import balance
 
 

@@ -3,11 +3,11 @@ import logging
 import time
 
 import pytz
-
-from models import Stock
-from settings import HISTORY_DAYS_BEFORE, HISTORY_LOAD_BATCH
 from trade.stock_history.stock_history import get_history_range, save_history
-from trade.stock_history.update import finamru_api
+
+from trading_system.models import Stock
+from trading_system.settings import HISTORY_DAYS_BEFORE, HISTORY_LOAD_BATCH
+from trading_system.trade.stock_history.update import finamru_api
 
 logger = logging.getLogger(__name__)
 

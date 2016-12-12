@@ -1,8 +1,7 @@
 import datetime
 from unittest import mock
 
-import trade
-from models import Ticket
+from trading_system.models import Ticket
 from .base import BaseUserTestCase
 
 
@@ -11,13 +10,13 @@ def create_ticket(session, user_id, count=None, price=None, buy=True, duration=N
     price = 765.31 if price is None else price
     duration = duration or datetime.timedelta(hours=3)
 
-    stock = trade.stocks.create_or_get_stock(
+    stock = trading_system.trade.stocks.create_or_get_stock(
         session,
         market='MARKET',
         code='CODE'
     )
 
-    ticket = trade.tickets.open_ticket(
+    ticket = trading_system.trade.tickets.open_ticket(
         session,
         user_id=user_id,
         stock_id=stock.id,
@@ -107,7 +106,7 @@ class TestTradeTickets(BaseUserTestCase):
         transfer_money.reset_mock()
         transfer_stocks.reset_mock()
 
-        trade.tickets.close_ticket(self.session, ticket.id, success=True)
+        trading_system.trade.tickets.close_ticket(self.session, ticket.id, success=True)
 
         self.assertFalse(ticket.opened)
         transfer_money.assert_not_called()
@@ -129,7 +128,7 @@ class TestTradeTickets(BaseUserTestCase):
         transfer_money.reset_mock()
         transfer_stocks.reset_mock()
 
-        trade.tickets.close_ticket(self.session, ticket.id, success=True)
+        trading_system.trade.tickets.close_ticket(self.session, ticket.id, success=True)
 
         transfer_money.assert_called_once_with(
             self.session,
@@ -149,7 +148,7 @@ class TestTradeTickets(BaseUserTestCase):
         transfer_money.reset_mock()
         transfer_stocks.reset_mock()
 
-        trade.tickets.close_ticket(self.session, ticket.id, success=False)
+        trading_system.trade.tickets.close_ticket(self.session, ticket.id, success=False)
 
         transfer_money.assert_called_once_with(
             self.session,
@@ -169,7 +168,7 @@ class TestTradeTickets(BaseUserTestCase):
         transfer_money.reset_mock()
         transfer_stocks.reset_mock()
 
-        trade.tickets.close_ticket(self.session, ticket.id, success=False)
+        trading_system.trade.tickets.close_ticket(self.session, ticket.id, success=False)
 
         transfer_money.assert_not_called()
         transfer_stocks.assert_called_once_with(
@@ -188,4 +187,4 @@ class TestTradeTickets(BaseUserTestCase):
         ticket.opened = False
 
         with self.assertRaises(ValueError):
-            trade.tickets.close_ticket(self.session, ticket.id, success=False)
+            trading_system.trade.tickets.close_ticket(self.session, ticket.id, success=False)

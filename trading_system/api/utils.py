@@ -12,5 +12,6 @@ def str_to_date(s):
 
     return date
 
+
 def json_data(data):
     return jsonify({'data': data})
