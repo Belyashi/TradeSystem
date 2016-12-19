@@ -13,7 +13,11 @@ auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 @auth.route('/register')
 def user_register():
-    token = users.register(session)
+    data = json.loads(request.data).get('data')
+    username = data.get('username')
+    passw = data.get('password')
+
+    token = users.register(session, username, passw)
     return json_data({'token': token})
 
 
