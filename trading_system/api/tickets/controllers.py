@@ -4,7 +4,7 @@ from trading_system import models as mx
 from trading_system.db import session
 from trading_system.api.base_view import BaseView
 from trading_system.api.utils import json_data
-from trading_system.trade.tickets import open_ticket
+from trading_system.trade.tickets import open_ticket, close_ticket
 
 
 class TicketsController(BaseView):
@@ -76,6 +76,6 @@ class TicketController(BaseView):
         if not ticket:
             return '', 404
 
-        session.delete(ticket)
+        close_ticket(session, ticket.id, False)
 
-        return 'Ok'
+        return 'Ticket closed'
