@@ -9,11 +9,11 @@ from trading_system.api.auth_middleware import auth_middleware
 from trading_system.db import session
 import trading_system
 
-stocks = Blueprint('stocks', __name__)
+stocks = Blueprint('stocks', __name__, url_prefix='/stocks')
 stocks.before_request(auth_middleware)
 
 
-@stocks.route('/stocks')
+@stocks.route('/')
 def stocks_list():
     data = []
     for stock in session.query(Stock):
@@ -26,7 +26,7 @@ def stocks_list():
     return json_data(data)
 
 
-@stocks.route('/stocks/<tag>/history')
+@stocks.route('/<tag>/history')
 def stock_history(tag):
     stock = trading_system.trade.stocks.get_by_tag(session, tag)
 
