@@ -11,9 +11,9 @@ from trading_system.trade import users
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-@auth.route('/register')
+@auth.route('/register', methods=['POST'])
 def user_register():
-    data = json.loads(request.data).get('data')
+    data = json.loads(request.data.encode('utf-8'))
     username = data.get('username')
     passw = data.get('password')
 
@@ -21,9 +21,9 @@ def user_register():
     return json_data({'token': token})
 
 
-@auth.route('/login')
+@auth.route('/login', methods=['POST'])
 def user_login():
-    data = json.loads(request.data).get('data')
+    data = json.loads(request.data.encode('utf-8'))
     username = data.get('username')
     passw = data.get('password')
 
@@ -34,7 +34,8 @@ def user_login():
     return json_data({'token': token})
 
 
-@auth.route('/logout')
+@auth.route('/logout', methods=['POST'])
 def user_logout():
     token = request.args.get('token')
     users.log_out(session, token)
+    return 'Ok'
