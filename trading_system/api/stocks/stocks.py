@@ -49,3 +49,12 @@ def stock_history(tag):
             'price': item.price
         })
     return json_data(data)
+
+
+@stocks.route('/<id_>')
+def get_stock(id_):
+    result = session.query(Stock).filter(Stock.id == int(id_)).first()
+    if not result:
+        return 'Oops', 404
+
+    return json_data(result)
