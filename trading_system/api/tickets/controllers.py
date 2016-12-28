@@ -24,7 +24,7 @@ class TicketsController(BaseView):
             'stock_id', 'count', 'price', 'buy', 'duration'
         )
 
-        data = json.dumps(request.data)
+        data = json.loads(request.data.decode('utf-8'))
 
         missing_members = set(required_members) - set(data)
         if missing_members:
