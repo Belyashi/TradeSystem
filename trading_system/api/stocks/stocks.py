@@ -26,20 +26,24 @@ def stocks_list():
     return json_data(data)
 
 
-@stocks.route('/<tag>/history')
-def stock_history(tag):
-    stock = trading_system.trade.stocks.get_by_tag(session, tag)
-
+@stocks.route('/<id_>/history')
+def stock_history(id_):
     from_date = str_to_date(request.args.get('from_date'))
     to_date = str_to_date(request.args.get('to_date'))
 
-    criterion = [StockHistory.stock_id == stock.id]
+    filters = [
+        (StockHistory.stock_id == int(id_))
+    ]
     if from_date:
-        criterion.append(StockHistory.time >= from_date)
+        filters.append(
+            StockHistory.time >= from_date
+        )
     if to_date:
-        criterion.append(StockHistory.time < (to_date + datetime.timedelta(days=1)))
+        filters.append(
+            StockHistory.time <= (to_date + datetime.timedelta(days=1))
+        )
 
-    query = session.query(StockHistory).filter(*criterion).order_by(StockHistory.time)
+    query = session.query(StockHistory).filter(*filters).order_by(StockHistory.time)
 
     data = []
     for item in query:
