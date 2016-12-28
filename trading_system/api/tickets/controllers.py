@@ -1,3 +1,4 @@
+import datetime
 import json
 from flask import request
 from trading_system import models as mx
@@ -41,7 +42,7 @@ class TicketsController(BaseView):
             data['count'],
             data['price'],
             data['buy'],
-            data['duration'],
+            datetime.timedelta(minutes=data['duration']),
         )
 
         return json_data(ticket)

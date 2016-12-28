@@ -1,3 +1,4 @@
+import copy
 import datetime
 import time
 from flask import jsonify
@@ -20,10 +21,16 @@ def json_data(data, **kwargs):
     :param kwargs: support kwarg `excluded_keys` for non-serializable fields
         of SQLAlchemy models
     """
+    kwargs = copy.copy(kwargs)
     if isinstance(data, list):
-        if data and isinstance(data[0], mx.Base):
-            data = [item.__json__(**kwargs) for item in data]
+        result = [json_data(item, **kwargs) for item in data]
     elif isinstance(data, mx.Base):
-        data = data.__json__(**kwargs)
+        if isinstance(data, mx.Ticket):
+            kwargs['exluded_keys'] = set('duration')
+            result = data.__json__(**kwargs)
+            result['duration'] = data.duration.total_seconds() / 60
 
-    return jsonify(data)
+        else:
+            result = data.__json__(**kwargs)
+
+    return jsonify(result)
