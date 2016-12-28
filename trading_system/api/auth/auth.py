@@ -13,7 +13,7 @@ auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 @auth.route('/register', methods=['POST'])
 def user_register():
-    data = json.loads(request.data)
+    data = json.loads(request.data.decode('utf-8'))
     username = data.get('username')
     passw = data.get('password')
 
@@ -23,7 +23,7 @@ def user_register():
 
 @auth.route('/login', methods=['POST'])
 def user_login():
-    data = json.loads(request.data)
+    data = json.loads(request.data.decode('utf-8'))
     username = data.get('username')
     passw = data.get('password')
 
