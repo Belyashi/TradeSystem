@@ -7,7 +7,6 @@ from trading_system.models import Stock, StockHistory
 from trading_system.api.utils import str_to_date, json_data
 from trading_system.api.auth_middleware import auth_middleware
 from trading_system.db import session
-import trading_system
 
 stocks = Blueprint('stocks', __name__, url_prefix='/stocks')
 stocks.before_request(auth_middleware)
